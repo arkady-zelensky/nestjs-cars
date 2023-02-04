@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nestjs-cars
-          path: .
+          path: dist
 
   deploy:
     runs-on: ubuntu-latest
