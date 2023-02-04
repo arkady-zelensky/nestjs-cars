@@ -1,0 +1,45 @@
+name: nestjs-cars
+run-name: ${{ github.actor }} pushed a new version
+
+on:
+  push:
+    branches: [ main, test* ]
+  pull_request:
+    branches:
+      - main
+      - test*
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:
+          - 18.12.1
+#          - 18.x
+
+    steps:
+      - name: Checkout    # checks out your repository and downloads it to the runner
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Test heroku
+        run: |
+          heroku
+
+      - name: Build
+        run: |
+          npm install
+          npm run build
+          echo "🎉 build successful"
+
+      - name: Unit tests
+        run: |
+          DB_HOST='localhost' DB_PORT=1234 DB_USERNAME=testuser DB_PASSWORD=pass DB_NAME=fakedb \
+          npm run test:cov
