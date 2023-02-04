@@ -12,7 +12,9 @@ export class CarsService {
 
   async getAll() {
     // return this.carsRepository.query(`// select * from cars`);
-    return this.carsRepository.find();
+    // const res: Array<any> = await this.carsRepository.find();
+    const res: any[] = await this.carsRepository.find();
+    return res;
   }
 
   async getById(id: number) {

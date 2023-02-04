@@ -29,15 +29,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
 
-      - name: Test heroku
-        run: |
-          heroku
-
       - name: Build
         run: |
           npm install
           npm run build
           echo "🎉 build successful"
+
+      - name: Linter
+        run: |
+          npm run lint
 
       - name: Unit tests
         run: |
