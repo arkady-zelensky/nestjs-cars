@@ -13,7 +13,6 @@ env:
   AZURE_WEBAPP_NAME: nestjs-cars-code   # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '18.12.1'
-#  NODE_VERSION: '18.x'
 
 jobs:
   build_and_test:
@@ -23,7 +22,7 @@ jobs:
       - name: Checkout    # checks out your repository and downloads it to the runner
         uses: actions/checkout@v3
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -41,7 +40,6 @@ jobs:
 
       - name: Unit tests
         run: |
-          DB_HOST='localhost' DB_PORT=1234 DB_USERNAME=testuser DB_PASSWORD=pass DB_NAME=fakedb \
           npm run test:cov
 
       - name: Zip artifact for deployment

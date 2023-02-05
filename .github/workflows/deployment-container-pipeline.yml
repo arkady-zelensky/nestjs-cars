@@ -51,7 +51,7 @@ jobs:
           name: nestjs-cars
           path: release.zip
 
-  deploy:
+  deploy_container:
     runs-on: ubuntu-latest
     needs: build_and_test
     environment:
@@ -67,10 +67,25 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      - name: 'Deploy to Azure WebApp'
+      - name: Login docker
+        uses: docker/login-action@v2
+#        uses: azure/docker-login@v1
+        with:
+#          login-server: nestjscarsregistry.azurecr.io
+          registry: nestjscarsregistry.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Prepare app image
+        run: |
+          docker build . -t nestjscarsregistry.azurecr.io/nestjs-cars-image:${{ github.sha }}
+          docker push nestjscarsregistry.azurecr.io/nestjs-cars-image:${{ github.sha }}     
+
+      - name: Deploy to Azure WebApp
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2.2.5
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          images: 'nestjscarsregistry.azurecr.io/nestjs-cars-image:${{ github.sha }}'
