@@ -7,9 +7,9 @@ const memory = {
 @Injectable()
 export class CarsService {
   async getAll() {
-    // const cars: any[] = memory.cars;
+    const cars: any[] = memory.cars;
     console.log('getAll');
-    const cars: Array<any> = memory.cars;
+    // const cars: Array<any> = memory.cars;
     return cars;
   }
 
