@@ -16,7 +16,9 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello from Azure container!!!');
+      expect(appController.getHello()).toBe(
+        'Hello, world! I have been deployed with docker.',
+      );
     });
   });
 });

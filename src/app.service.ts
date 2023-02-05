@@ -3,6 +3,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): string {
-    return 'Hello from Azure container!!!';
+    return 'Hello, world! I have been deployed with docker.';
   }
 }
